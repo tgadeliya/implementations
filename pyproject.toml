@@ -1,5 +1,5 @@
 [project]
-name = "masala"
+name = "rooibos"
 version = "0.1.0"
 description = "Implementation of ml, dl, math algorithms with tests. Additional notebooks for deeper understanding"
 readme = "README.md"

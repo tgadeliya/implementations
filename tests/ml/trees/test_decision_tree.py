@@ -1,6 +1,6 @@
 from pytest import fixture
 from pytest import mark
-from masala.ml import DecisionTreeClassifier
+from rooibos.ml import DecisionTreeClassifier
 
 
 @fixture
