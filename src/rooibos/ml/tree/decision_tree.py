@@ -8,6 +8,7 @@ from .metrics import (
     missclassification_error,
 )
 
+
 class DecisionTreeNode:
     def __init__(self, parent: "DecisionTreeNode", depth: int):
         self.parent = parent
@@ -63,7 +64,13 @@ class DecisionTreeClassifier:
         # self.classes = set(y)
         # self.n_classes = len(self.classes)
 
-        def build_tree(parent_node, X, y, depth, used_features_idxs: Set[int]):
+        def build_tree(
+            parent_node: DecisionTreeNode,
+            X,
+            y,
+            depth: int,
+            used_features_idxs: Set[int],
+        ):
             if self.max_depth and depth > self.max_depth:
                 return None  # max depth reached
 
@@ -170,7 +177,11 @@ class DecisionTreeClassifier:
         node = self.tree
         pred = node.split["class"]
         while node and (not node.is_leaf):
-            f_idx, threshold, pred = node.split["feature_idx"], node.split["threshold"], node.split["class"]
+            f_idx, threshold, pred = (
+                node.split["feature_idx"],
+                node.split["threshold"],
+                node.split["class"],
+            )
             node = node.left if x[f_idx] <= threshold else node.right
         return pred
 
