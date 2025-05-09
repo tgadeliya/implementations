@@ -45,7 +45,7 @@ class LinearRegressionSGD:
             self.W[i] -= self.eta * gw[i]
         self.b -= self.eta * gb
 
-    def predict(self, X:list[list[float]]) -> list[float]:
+    def predict(self, X: list[list[float]]) -> list[float]:
         return [self.predict_example(x) for x in X]
 
     def predict_example(self, x: list[float]) -> float:
