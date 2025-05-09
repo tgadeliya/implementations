@@ -56,7 +56,7 @@ class DecisionTreeClassifier:
         else:
             raise ValueError(f"Unknown criterion: {criterion}")
 
-    def train(self, X, y) -> None:
+    def train(self, X: list[list[float]], y: list[float]) -> None:
         """
         Fit the decision tree classifier to the training data.
         """
@@ -187,3 +187,5 @@ class DecisionTreeClassifier:
 
 
 # TODO: Add decision tree regressor
+class DecisionTreeRegressor(DecisionTreeClassifier):
+    pass

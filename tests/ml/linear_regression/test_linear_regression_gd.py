@@ -22,7 +22,7 @@ def test_linear_regression_sgd_predict():
     y = [5, 7, 9]
     model = LinearRegressionSGD(eta=0.01, n_epochs=10)
     model.train(X, y)
-    prediction = model.predict([4, 5])
+    prediction = model.predict_example([4, 5])
     assert isinstance(prediction, float)
 
 def test_linear_regression_sgd_init_weights():
