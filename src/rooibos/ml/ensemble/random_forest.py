@@ -4,12 +4,13 @@ from random import choices
 
 from rooibos.ml.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
+
 class RandomForest(ABC):
-    def __init__(self, n_trees:int, bootstrap_size:int) -> None:
+    def __init__(self, n_trees: int, bootstrap_size: int) -> None:
         self.n_models = n_trees
         self.bootstrap_size = bootstrap_size
-        
-        self.models: list[DecisionTreeClassifier|DecisionTreeRegressor] = []
+
+        self.models: list[DecisionTreeClassifier | DecisionTreeRegressor] = []
 
     def train(self, X: list[list[float]], y: list[float]) -> list[Any]:
         n_samples = int(len(X) * self.bootstrap_size)
@@ -30,8 +31,9 @@ class RandomForest(ABC):
         y_sampled = [y[i] for i in indices_sampled]
         return X_sampled, y_sampled
 
-
-    def split_dataset_for_bootstrap(self, X: list[list[float]], y: list[float], n_samples: int) -> tuple[list[list[list[float]]], list[list[float]]]:
+    def split_dataset_for_bootstrap(
+        self, X: list[list[float]], y: list[float], n_samples: int
+    ) -> tuple[list[list[list[float]]], list[list[float]]]:
         X_split: list[list[list[float]]] = []
         y_split: list[list[float]] = []
         for _ in range(self.n_models):
@@ -40,10 +42,9 @@ class RandomForest(ABC):
             y_split.append(y_sampled)
         return X_split, y_split
 
-
     def predict(self, X: list[list[float]]) -> list[Optional[float]]:
         return [self.predict_example(x) for x in X]
-    
+
     def predict_example(self, x: list[float]) -> float:
         return self.aggregate([m.predict_example(x) for m in self.models])
 
@@ -53,9 +54,11 @@ class RandomForest(ABC):
 
 
 class RandomForestClassifier(RandomForest):
-    def __init__(self, n_trees:int, bootstrap_size:int) -> None:
+    def __init__(self, n_trees: int, bootstrap_size: int) -> None:
         super().__init__(n_trees, bootstrap_size)
-        self.models: list[Any] = [DecisionTreeClassifier() for _ in range(self.n_models)]
+        self.models: list[Any] = [
+            DecisionTreeClassifier() for _ in range(self.n_models)
+        ]
 
     def aggregate(self, preds: list[float]) -> float:
         return max(set(preds), key=preds.count)
@@ -64,11 +67,15 @@ class RandomForestClassifier(RandomForest):
 class RandomForestRegressor(RandomForest):
     aggregation_methods = ["mean", "median"]
 
-    def __init__(self, n_trees:int, bootstrap_size:int, aggregation_method:str="mean") -> None:
+    def __init__(
+        self, n_trees: int, bootstrap_size: int, aggregation_method: str = "mean"
+    ) -> None:
         if aggregation_method not in self.aggregation_methods:
-            raise ValueError(f"Aggregation method {aggregation_method} not supported. Supported methods are: {self.aggregation_methods}")
+            raise ValueError(
+                f"Aggregation method {aggregation_method} not supported. Supported methods are: {self.aggregation_methods}"
+            )
         self.aggregation_method = aggregation_method
-        super().__init__(n_trees, bootstrap_size)    
+        super().__init__(n_trees, bootstrap_size)
         self.models: list[Any] = [DecisionTreeRegressor() for _ in range(self.n_models)]
 
     def aggregate(self, preds: list[float]) -> float:

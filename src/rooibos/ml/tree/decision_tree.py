@@ -93,7 +93,13 @@ class DecisionTreeClassifier:
         self.classes = set(y)
         self.n_classes = len(self.classes)
 
-        def build_tree(parent_node: DecisionTreeNode, X: list[list[float]], y: list[float], depth: int, used_features_idxs: Set[int]) -> DecisionTreeNode:
+        def build_tree(
+            parent_node: DecisionTreeNode,
+            X: list[list[float]],
+            y: list[float],
+            depth: int,
+            used_features_idxs: Set[int],
+        ) -> DecisionTreeNode:
             if depth >= self.max_depth or used_features_idxs == self.max_features:
                 return None
 

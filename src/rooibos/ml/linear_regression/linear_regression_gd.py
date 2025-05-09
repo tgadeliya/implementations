@@ -5,7 +5,7 @@ class LinearRegressionSGD:
     def __init__(self, eta: float, n_epochs: int) -> None:
         self.eta = eta
         self.n_epochs = n_epochs
-        
+
     @staticmethod
     def dot(x: list[float], y: list[float]) -> float:
         return sum(map(lambda x: x[0] * x[1], zip(x, y)))
@@ -40,7 +40,7 @@ class LinearRegressionSGD:
             self.W[i] -= self.eta * gw[i]
         self.b -= self.eta * gb
 
-    def predict(self, X:list[list[float]]) -> list[float]:
+    def predict(self, X: list[list[float]]) -> list[float]:
         return [self.predict_example(x) for x in X]
 
     def predict_example(self, x: list[float]) -> float:
