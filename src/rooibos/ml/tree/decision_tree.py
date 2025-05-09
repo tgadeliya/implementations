@@ -1,8 +1,8 @@
-from typing import Optional, Union, List, Tuple, Iterable, Set
+from typing import Optional, Union, List, Tuple, Iterable, Set, Callable
 from math import log2
 from collections import Counter
 
-from masala.ml.trees.metrics import (
+from .metrics import (
     gini_impurity,
     shannon_entropy,
     missclassification_error,
@@ -17,7 +17,7 @@ class DecisionTreeNode:
         self.is_leaf = False
         self.split = {"feature_idx": None, "threshold": None, "class": None}
 
-    def set_split(self, feature_idx, threshold):
+    def set_split(self, feature_idx: int, threshold: float) -> None:
         self.split["feature_idx"] = feature_idx
         self.split["threshold"] = threshold
 
@@ -34,7 +34,7 @@ class DecisionTreeClassifier:
         max_leaf_nodes: Optional[int] = None,
         max_features: Optional[int] = None,
         max_samples_per_node: Optional[int] = None,
-    ):
+    ) -> None:
         self.criterion = self.get_criterion(criterion)
         self.max_depth = max_depth
         self.max_leaf_nodes = max_leaf_nodes
@@ -42,7 +42,7 @@ class DecisionTreeClassifier:
 
         self.tree = None
 
-    def get_criterion(self, criterion: str):
+    def get_criterion(self, criterion: str) -> Callable[Any]:
         """
         Get the criterion function based on the specified criterion.
         """
@@ -55,7 +55,7 @@ class DecisionTreeClassifier:
         else:
             raise ValueError(f"Unknown criterion: {criterion}")
 
-    def train(self, X, y):
+    def train(self, X, y) -> None:
         """
         Fit the decision tree classifier to the training data.
         """
