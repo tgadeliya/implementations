@@ -216,3 +216,5 @@ class DecisionTreeClassifier:
 
 
 # TODO: Add decision tree regressor
+class DecisionTreeRegressor(DecisionTreeClassifier):
+    pass
