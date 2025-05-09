@@ -34,6 +34,7 @@ def missclassification_error(x: list[str | int]) -> float:
     return 1 - max(probs)
 
 
+
 class DecisionTreeNode:
     def __init__(self, parent: "DecisionTreeNode | None", depth: int) -> None:
         self.parent = parent
