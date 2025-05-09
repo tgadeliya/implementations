@@ -10,11 +10,12 @@ class Bagging(ABC):
         self.models: list[Any] = models
         self.bootstrap_size = bootstrap_size 
 
-        for m in self.models:
-            assert m.train, f"Method `.train` is not implemented in model {m}"
-            assert (
-                m.predict_example
-            ), f"Method `.predict_example` is not implemented in model {m}"
+        for m in self.models:            
+            if not (hasattr(m, "train") and callable(getattr(m, "train"))):
+                raise AttributeError(f"Method `.train` is not implemented in model {m}")
+            if not (hasattr(m, "predict_example") and callable(getattr(m, "predict_example"))):
+                raise AttributeError(f"Method `.predict_example` is not implemented in model {m}")
+
 
         self.n_models: int = len(models)
 
