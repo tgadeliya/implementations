@@ -53,11 +53,7 @@ def split_dataset(f_idx, thr, dataset, y):
 def calculate_information_gain(y, yl, yr, criterion=entropy):
     assert len(y) == len(yl) + len(yr), "length in splits do not merge"
     ylen = len(y)
-    return (
-        criterion(y)
-        - criterion(yl) * (len(yl) / ylen)
-        - criterion(yr) * (len(yr) / ylen)
-    )
+    return criterion(y) - criterion(yl) * (len(yl) / ylen) - criterion(yr) * (len(yr) / ylen)
 
 
 def best_gini_split(dataset, y):
@@ -95,9 +91,7 @@ def build_tree(X, target, depth, min_size=MIN_SIZE, max_depth=MAX_DEPTH):
     return node
 
 
-def learn_decision_tree(
-    examples: list[dict], attributes: list[str], target_attr: str
-) -> dict:
+def learn_decision_tree(examples: list[dict], attributes: list[str], target_attr: str) -> dict:
     X, y = preprocess_data(examples, attributes, target_attr)
     root = build_tree(X, y, 0)
     return root

@@ -36,9 +36,7 @@ class KMeans:
             print(f"Epoch={n_iter}, centroids={self.centroids}")
         return self.centroids
 
-    def train_one_epoch(
-        self, X: list[list[float]], centroids: list[list[float]]
-    ) -> list[list[float]]:
+    def train_one_epoch(self, X: list[list[float]], centroids: list[list[float]]) -> list[list[float]]:
         new_centroids: list[list[float]] = [c for c in centroids]
         centroid2example = self.calculate_clusters_for_dataset(X, centroids)
         for c, examples in centroid2example.items():
@@ -63,9 +61,7 @@ class KMeans:
             c2e[x_cent].append(x)
         return c2e
 
-    def calculate_distance(
-        self, e: list[float], centroids: list[list[float]]
-    ) -> list[float]:
+    def calculate_distance(self, e: list[float], centroids: list[list[float]]) -> list[float]:
         return [self.dist(e, c) for c in centroids]
 
     def is_stable(

@@ -56,9 +56,7 @@ class RandomForest(ABC):
 class RandomForestClassifier(RandomForest):
     def __init__(self, n_trees: int, bootstrap_size: int) -> None:
         super().__init__(n_trees, bootstrap_size)
-        self.models: list[Any] = [
-            DecisionTreeClassifier() for _ in range(self.n_models)
-        ]
+        self.models: list[Any] = [DecisionTreeClassifier(use_random_feature_subset=True, random_feature_subset_size="auto") for _ in range(self.n_models)]
 
     def aggregate(self, preds: list[float]) -> float:
         return max(set(preds), key=preds.count)
@@ -68,7 +66,11 @@ class RandomForestRegressor(RandomForest):
     aggregation_methods = ["mean", "median"]
 
     def __init__(
-        self, n_trees: int, bootstrap_size: int, aggregation_method: str = "mean"
+        self,
+        n_trees: int,
+        bootstrap_size: int,
+        aggregation_method: str = "mean",
+        n_features_per_tree: int = 5,
     ) -> None:
         if aggregation_method not in self.aggregation_methods:
             raise ValueError(
@@ -76,7 +78,7 @@ class RandomForestRegressor(RandomForest):
             )
         self.aggregation_method = aggregation_method
         super().__init__(n_trees, bootstrap_size)
-        self.models: list[Any] = [DecisionTreeRegressor() for _ in range(self.n_models)]
+        self.models: list[Any] = [DecisionTreeRegressor(use_random_feature_subset=True, random_feature_subset_size="auto") for _ in range(self.n_models)]
 
     def aggregate(self, preds: list[float]) -> float:
         if self.aggregation_method == "median":
