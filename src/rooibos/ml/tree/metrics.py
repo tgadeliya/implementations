@@ -1,6 +1,5 @@
-from typing import Union,  Iterable
+from typing import Union, Iterable
 from math import log2
-
 
 
 def gini_impurity(x: Iterable[Union[str, int]]) -> float:

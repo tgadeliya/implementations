@@ -31,6 +31,7 @@ def missclassification_error(x: list[str | int]) -> float:
         probs.append(p)
     return 1 - max(probs)
 
+
 class DecisionTreeNode:
     def __init__(self, parent: "DecisionTreeNode", depth: int):
         self.parent = parent
@@ -204,7 +205,11 @@ class DecisionTreeClassifier:
         node = self.tree
         pred = node.split["class"]
         while node and (not node.is_leaf):
-            f_idx, threshold, pred = node.split["feature_idx"], node.split["threshold"], node.split["class"]
+            f_idx, threshold, pred = (
+                node.split["feature_idx"],
+                node.split["threshold"],
+                node.split["class"],
+            )
             node = node.left if x[f_idx] <= threshold else node.right
         return pred
 
