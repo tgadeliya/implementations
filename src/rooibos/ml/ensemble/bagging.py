@@ -6,8 +6,9 @@ from random import choices
 class Bagging(ABC):
     """Vanilla Bootstrap aggregation"""
 
-    def __init__(self, models: list[Any]) -> None:
+    def __init__(self, models: list[Any], bootstrap_size: float) -> None:
         self.models: list[Any] = models
+        self.bootstrap_size = bootstrap_size 
 
         for m in self.models:
             assert m.train, f"Method `.train` is not implemented in model {m}"
@@ -18,7 +19,8 @@ class Bagging(ABC):
         self.n_models: int = len(models)
 
     def train(self, X: list[list[float]], y: list[float]):
-        X_split, y_split = self.split_dataset(X, y, self.n_models)
+        n_samples = int(len(X) * self.bootstrap_size)
+        X_split, y_split = self.split_dataset_for_bootstrap(X, y, n_samples)
         models_output: list[Any] = []
         for i in range(self.n_models):
             Xs, ys = X_split[i], y_split[i]
@@ -26,22 +28,21 @@ class Bagging(ABC):
             models_output.append(out)
         return models_output
 
-    def split_dataset(
-        self, X: list[list[float]], y: list[float], n_splits: int
+    def split_dataset_for_bootstrap(
+        self, X: list[list[float]], y: list[float], split_size: int
     ) -> tuple[list[list[list[float]]], list[list[float]]]:
         X_split: list[list[list[float]]] = []
         y_split: list[list[float]] = []
-        for _ in range(n_splits):
-            x_sampled, y_sampled = self.sample_data_bootstrap(X, y)
+        for _ in range(self.n_models):
+            x_sampled, y_sampled = self.sample_data_bootstrap(X, y, n_samples=split_size)
             X_split.append(x_sampled)
             y_split.append(y_sampled)
         return X_split, y_split
 
     def sample_data_bootstrap(
-        self, X: list[list[float]], y: list[float]
+        self, X: list[list[float]], y: list[float], n_samples: int
     ) -> tuple[list[list[float]], list[float]]:
         indices = list(range(len(X)))
-        n_samples = 100
         indices_sampled = choices(indices, k=n_samples)
         X_sampled = [X[i] for i in indices_sampled]
         y_sampled = [y[i] for i in indices_sampled]
@@ -65,9 +66,6 @@ class Bagging(ABC):
 class BaggingClassifier(Bagging):
     """Vanilla Bootstrap aggregation for classification problem with majority voting aggregation"""
 
-    def __init__(self, models: list[Any]) -> None:
-        super().__init__(models)
-
     def aggregate(self, predictions: list[float]) -> Optional[float]:
         return max(set(predictions), key=lambda x: predictions.count(x))
 
@@ -77,8 +75,8 @@ class BaggingRegressor(Bagging):
 
     supported_aggregations = ["mean", "median"]
 
-    def __init__(self, models: list[Any], aggregation: str = "mean") -> None:
-        super().__init__(models)
+    def __init__(self, models: list[Any], bootstrap_size: float, aggregation: str = "mean") -> None:
+        super().__init__(models, bootstrap_size)
         self.aggregation = aggregation
         assert aggregation in self.supported_aggregations
 
