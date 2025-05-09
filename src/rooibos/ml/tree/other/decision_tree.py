@@ -78,8 +78,8 @@ class DecisionTreeClassifier:
 
             node = DecisionTreeNode(parent=parent_node, depth=depth)
             # find best split for current node
-            (best_feat_idx, best_threshold, left_idxs, right_idxs) = (
-                self.get_best_split(X, y, used_features_idxs, self.criterion)
+            (best_feat_idx, best_threshold, left_idxs, right_idxs) = self.get_best_split(
+                X, y, used_features_idxs, self.criterion
             )
 
             node.set_split(feature_idx=best_feat_idx, threshold=best_threshold)
@@ -90,9 +90,7 @@ class DecisionTreeClassifier:
             X_right = [X[idx] for idx in right_idxs]
             y_right = [y[idx] for idx in right_idxs]
             node.left = build_tree(node, X_left, y_left, depth + 1, used_features_idxs)
-            node.right = build_tree(
-                node, X_right, y_right, depth + 1, used_features_idxs
-            )
+            node.right = build_tree(node, X_right, y_right, depth + 1, used_features_idxs)
 
             if node.left is None and node.right is None:  # leaf node
                 node.is_leaf = True
@@ -105,19 +103,13 @@ class DecisionTreeClassifier:
         available_features = [i for i in range(len(X[0])) if i not in used_features]
         inf_gains = []
         for feature_idx in available_features:
-            ig_best, ig_best_thr, left_idxs_best, right_idxs_best = (
-                self.get_information_gain(
-                    [x[feature_idx] for x in X], y, criterion_func
-                )
+            ig_best, ig_best_thr, left_idxs_best, right_idxs_best = self.get_information_gain(
+                [x[feature_idx] for x in X], y, criterion_func
             )
-            inf_gains.append(
-                (feature_idx, ig_best, ig_best_thr, left_idxs_best, right_idxs_best)
-            )
+            inf_gains.append((feature_idx, ig_best, ig_best_thr, left_idxs_best, right_idxs_best))
 
         inf_gains.sort(key=lambda x: x[1], reverse=True)
-        best_feature_idx, best_ig, best_thr, left_idxs_best, right_idxs_best = (
-            inf_gains[0]
-        )
+        best_feature_idx, best_ig, best_thr, left_idxs_best, right_idxs_best = inf_gains[0]
         return best_feature_idx, best_thr, left_idxs_best, right_idxs_best
 
     def get_information_gain(self, x, y, criterion_func):
@@ -147,9 +139,7 @@ class DecisionTreeClassifier:
             yr = [y[i] for i in right]
             ig_left = criterion_func(yl)
             ig_right = criterion_func(yr)
-            ig_thr = (
-                ig - (len(left) / len(x)) * ig_left - (len(right) / len(x)) * ig_right
-            )
+            ig_thr = ig - (len(left) / len(x)) * ig_left - (len(right) / len(x)) * ig_right
 
             if ig_thr > ig_best:
                 ig_best = ig_thr

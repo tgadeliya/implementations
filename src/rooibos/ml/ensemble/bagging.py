@@ -13,13 +13,8 @@ class Bagging(ABC):
         for m in self.models:
             if not (hasattr(m, "train") and callable(getattr(m, "train"))):
                 raise AttributeError(f"Method `.train` is not implemented in model {m}")
-            if not (
-                hasattr(m, "predict_example")
-                and callable(getattr(m, "predict_example"))
-            ):
-                raise AttributeError(
-                    f"Method `.predict_example` is not implemented in model {m}"
-                )
+            if not (hasattr(m, "predict_example") and callable(getattr(m, "predict_example"))):
+                raise AttributeError(f"Method `.predict_example` is not implemented in model {m}")
 
         self.n_models: int = len(models)
 
@@ -39,9 +34,7 @@ class Bagging(ABC):
         X_split: list[list[list[float]]] = []
         y_split: list[list[float]] = []
         for _ in range(self.n_models):
-            x_sampled, y_sampled = self.sample_data_bootstrap(
-                X, y, n_samples=split_size
-            )
+            x_sampled, y_sampled = self.sample_data_bootstrap(X, y, n_samples=split_size)
             X_split.append(x_sampled)
             y_split.append(y_sampled)
         return X_split, y_split
@@ -82,9 +75,7 @@ class BaggingRegressor(Bagging):
 
     supported_aggregations = ["mean", "median"]
 
-    def __init__(
-        self, models: list[Any], bootstrap_size: float, aggregation: str = "mean"
-    ) -> None:
+    def __init__(self, models: list[Any], bootstrap_size: float, aggregation: str = "mean") -> None:
         super().__init__(models, bootstrap_size)
         self.aggregation = aggregation
         assert aggregation in self.supported_aggregations

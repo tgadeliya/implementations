@@ -103,8 +103,10 @@ class DecisionTreeClassifier:
 
             node = DecisionTreeNode(parent=parent_node, depth=depth)
             # find best split for current node
-            (best_feat_idx, best_threshold, left_idxs, right_idxs) = (
-                self.get_best_split(X, y, used_features_idxs, self.criterion)
+
+            available_features = self.calculate_available_features_for_split(init_features=len(X[0]))
+            (best_feat_idx, best_threshold, left_idxs, right_idxs) = self.get_best_split(
+                X, y, available_features, self.criterion
             )
 
             node.set_split(feature_idx=best_feat_idx, threshold=best_threshold)
@@ -146,11 +148,10 @@ class DecisionTreeClassifier:
                     right_idxs_best,
                 )
             )
+            inf_gains.append((feature_idx, ig_best, ig_best_thr, left_idxs_best, right_idxs_best))
 
         inf_gains.sort(key=lambda x: x[1], reverse=True)
-        best_feature_idx, best_ig, best_thr, left_idxs_best, right_idxs_best = (
-            inf_gains[0]
-        )
+        best_feature_idx, best_ig, best_thr, left_idxs_best, right_idxs_best = inf_gains[0]
         return best_feature_idx, best_thr, left_idxs_best, right_idxs_best
 
     def get_information_gain(self, x, y, criterion_func):

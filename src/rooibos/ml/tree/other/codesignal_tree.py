@@ -108,9 +108,7 @@ if __name__ == "__main__":
     # Print the tree
     def print_tree(node, depth=0):
         if isinstance(node, dict):
-            print(
-                "%s[X%d < %.3f]" % ((depth * " ", (node["index"] + 1), node["value"]))
-            )
+            print("%s[X%d < %.3f]" % ((depth * " ", (node["index"] + 1), node["value"])))
             print_tree(node["left"], depth + 1)
             print_tree(node["right"], depth + 1)
         else:
