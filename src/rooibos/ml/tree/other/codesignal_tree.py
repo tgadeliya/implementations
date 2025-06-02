@@ -31,7 +31,12 @@ def get_split(dataset):
             groups = test_split(index, row[index], dataset)
             gini = gini_index(groups, class_values)
             if gini < b_score:
-                b_index, b_value, b_score, b_groups = index, row[index], gini, groups
+                b_index, b_value, b_score, b_groups = (
+                    index,
+                    row[index],
+                    gini,
+                    groups,
+                )
     return {"index": b_index, "value": b_value, "groups": b_groups}
 
 
@@ -49,7 +54,10 @@ def recurse_split(node, max_depth, min_size, depth):
         return
 
     if depth >= max_depth:
-        node["left"], node["right"] = create_terminal(left), create_terminal(right)
+        node["left"], node["right"] = (
+            create_terminal(left),
+            create_terminal(right),
+        )
         return
 
     if len(left) <= min_size:
@@ -108,7 +116,10 @@ if __name__ == "__main__":
     # Print the tree
     def print_tree(node, depth=0):
         if isinstance(node, dict):
-            print("%s[X%d < %.3f]" % ((depth * " ", (node["index"] + 1), node["value"])))
+            print(
+                "%s[X%d < %.3f]"
+                % ((depth * " ", (node["index"] + 1), node["value"]))
+            )
             print_tree(node["left"], depth + 1)
             print_tree(node["right"], depth + 1)
         else:

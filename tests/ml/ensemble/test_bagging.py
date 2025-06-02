@@ -1,6 +1,8 @@
 import pytest
-from rooibos.ml.ensemble.bagging import BaggingClassifier, BaggingRegressor
-from rooibos.ml.linear_regression.linear_regression_gd import LinearRegressionSGD
+from rooibos.ml.ensemble.bagging import BaggingRegressor
+from rooibos.ml.linear_regression.linear_regression_gd import (
+    LinearRegressionSGD,
+)
 
 # filepath: src/rooibos/ml/ensemble/test_bagging.py
 
@@ -19,7 +21,9 @@ def test_bagging_init():
         pass
 
     with pytest.raises(AttributeError):
-        BaggingRegressor(models=[InvalidModel()], bootstrap_size=0.8)  # Missing methods
+        BaggingRegressor(
+            models=[InvalidModel()], bootstrap_size=0.8
+        )  # Missing methods
 
 
 def test_bagging_regressor_with_linear_regression():
@@ -33,7 +37,9 @@ def test_bagging_regressor_with_linear_regression():
     models = [model1, model2]
 
     # Initialize BaggingRegressor
-    bagging = BaggingRegressor(models=models, bootstrap_size=0.8, aggregation="mean")
+    bagging = BaggingRegressor(
+        models=models, bootstrap_size=0.8, aggregation="mean"
+    )
 
     # Train the BaggingRegressor
     bagging.train(X, y)

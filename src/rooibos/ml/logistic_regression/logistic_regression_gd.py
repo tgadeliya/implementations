@@ -41,7 +41,9 @@ class LogisticRegressionGD:
             grad_w, grad_b = self.training_step(X[i], y[i])
             self._update_weights(grad_w, grad_b)
 
-    def training_step(self, x: list[float], y: float) -> tuple[list[float], float]:
+    def training_step(
+        self, x: list[float], y: float
+    ) -> tuple[list[float], float]:
         grad_w: list[float] = []
         prod = y * (self.dot(x, self.W) + self.b)
         for i in range(len(x)):
