@@ -53,12 +53,22 @@ def split_dataset(f_idx, thr, dataset, y):
 def calculate_information_gain(y, yl, yr, criterion=entropy):
     assert len(y) == len(yl) + len(yr), "length in splits do not merge"
     ylen = len(y)
-    return criterion(y) - criterion(yl) * (len(yl) / ylen) - criterion(yr) * (len(yr) / ylen)
+    return (
+        criterion(y)
+        - criterion(yl) * (len(yl) / ylen)
+        - criterion(yr) * (len(yr) / ylen)
+    )
 
 
 def best_gini_split(dataset, y):
     best_feat, best_thr = -1, -1
-    best_score, best_l, best_r, best_yr, best_yl = float("-inf"), None, None, None, None
+    best_score, best_l, best_r, best_yr, best_yl = (
+        float("-inf"),
+        None,
+        None,
+        None,
+        None,
+    )
     for i in range(len(dataset[0])):
         thrs = set([d[i] for d in dataset])
         for thr in thrs:
@@ -78,7 +88,9 @@ def build_tree(X, target, depth, min_size=MIN_SIZE, max_depth=MAX_DEPTH):
         node["is_terminal"] = True
         node["prediction"] = max(set(target), key=target.count)
     else:
-        ldataset, rdataset, ltarget, rtarget, feat_idx, thr = best_gini_split(X, target)
+        ldataset, rdataset, ltarget, rtarget, feat_idx, thr = best_gini_split(
+            X, target
+        )
         if len(ldataset) == 0 or len(rdataset) == 0:  # no sense to split futher
             node["is_terminal"] = True
             node["prediction"] = max(set(target), key=target.count)
@@ -91,7 +103,9 @@ def build_tree(X, target, depth, min_size=MIN_SIZE, max_depth=MAX_DEPTH):
     return node
 
 
-def learn_decision_tree(examples: list[dict], attributes: list[str], target_attr: str) -> dict:
+def learn_decision_tree(
+    examples: list[dict], attributes: list[str], target_attr: str
+) -> dict:
     X, y = preprocess_data(examples, attributes, target_attr)
     root = build_tree(X, y, 0)
     return root
