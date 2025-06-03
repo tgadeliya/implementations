@@ -46,7 +46,6 @@ coverage.xml
 cover/
 
 
-
 # Jupyter Notebook
 .ipynb_checkpoints
 
@@ -78,7 +77,10 @@ dmypy.json
 # VS Code settings
 .vscode
 
+# Ruff
+.ruff_cache
 
+# Mac OS 
 .DS_Store
 
 # notebook for experiments
