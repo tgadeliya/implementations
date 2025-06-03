@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "ipykernel>=6.29.5",
+    "jupyter>=1.1.1",
     "matplotlib>=3.10.1",
     "nbformat>=5.10.4",
     "numpy<2",
@@ -22,6 +23,10 @@ build-backend = "hatchling.build"
 
 [tool.ruff]
 line-length = 80
+extend-select= [
+    "UP",
+    "D"
+]
 
 [tool.ruff.lint]
 preview = true
