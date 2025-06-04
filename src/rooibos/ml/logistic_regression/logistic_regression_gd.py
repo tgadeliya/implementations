@@ -53,5 +53,6 @@ class LogisticRegressionGD:
         
         return grad_w, grad_b
 
-    def predict():
-        pass
+    def predict(self, x) -> float:
+        """Return the predicted probability for the positive class."""
+        return self.sigmoid(self.dot(x, self.W) + self.b)

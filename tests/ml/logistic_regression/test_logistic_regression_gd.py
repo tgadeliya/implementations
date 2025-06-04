@@ -13,21 +13,17 @@ def test_logistic_regression_gd_train_small():
     # assert isinstance(prediction, float)
 
 def test_logistic_regression_gd_train():
-    import numpy as np        
-    # Set seed for reproducibility
-    np.random.seed(0)
+    import random
+    random.seed(0)
 
-    # Generate class 0 data (centered at (2, 2))
-    x0 = np.random.randn(5, 2) + np.array([2, 2])
-    y0 = np.zeros(5) - 1
+    x0 = [[random.gauss(0, 1) + 2, random.gauss(0, 1) + 2] for _ in range(5)]
+    y0 = [-1] * 5
 
-    # Generate class 1 data (centered at (6, 6))
-    x1 = np.random.randn(5, 2) + np.array([6, 6])
-    y1 = np.ones(5)
+    x1 = [[random.gauss(0, 1) + 6, random.gauss(0, 1) + 6] for _ in range(5)]
+    y1 = [1] * 5
 
-    # Combine the data
-    X = np.vstack((x0, x1)).tolist()
-    y = np.concatenate((y0, y1)).tolist()
+    X = x0 + x1
+    y = y0 + y1
     model = LogisticRegressionGD(lr=0.1, n_epochs=100)
     result = model.train(X, y)
     assert "weight" in result

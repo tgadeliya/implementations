@@ -11,8 +11,9 @@ def gini_impurity(x: Iterable[Union[str, int]]) -> float:
     Calculate the Gini impurity of a list of classes.
     """
     sum_probs = 0
+    total = len(x)
     for c in set(x):
-        p = [o for o in x if o == c] / len(x)
+        p = len([o for o in x if o == c]) / total
         sum_probs += p**2
     return 1 - sum_probs
 
@@ -21,9 +22,10 @@ def shannon_entropy(x: Iterable[Union[str, int]]) -> float:
     """
     Calculate the Shannon entropy of a list of classes."""
     classes = set(x)
+    total = len(x)
     sum_ent = 0
     for c in classes:
-        p = [o for o in x if o == c] / len(x)
+        p = len([o for o in x if o == c]) / total
         sum_ent += -p * log2(p)
     return sum_ent
 
@@ -33,8 +35,9 @@ def missclassification_error(x: Iterable[Union[str, int]]) -> float:
     Calculate the misclassification error of a list of classes.
     """
     probs = []
+    total = len(x)
     for c in set(x):
-        p = [o for o in x if o == c] / len(x)
+        p = len([o for o in x if o == c]) / total
         probs.append(p)
     return 1 - max(probs)
 
@@ -181,7 +184,7 @@ class DecisionTreeClassifier:
         """
         Predict the class label for a single example.
         """
-        node.self.tree
+        node = self.tree
         while not node.is_leaf:
             f_idx, threshold = node.split["feature_idx"], node.split["threshold"]
             node = node.left if x[f_idx] <= threshold else node.right
