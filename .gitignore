@@ -78,7 +78,7 @@ dmypy.json
 # VS Code settings
 .vscode
 
-
+# MacOS annoying files
 .DS_Store
 
 # notebook for experiments
