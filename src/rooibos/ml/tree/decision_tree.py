@@ -32,6 +32,7 @@ def missclassification_error(x: list[str | int]) -> float:
     return 1 - max(probs)
 
 
+
 class DecisionTreeNode:
     def __init__(self, parent: "DecisionTreeNode", depth: int):
         self.parent = parent
@@ -102,8 +103,12 @@ class DecisionTreeClassifier:
 
             node = DecisionTreeNode(parent=parent_node, depth=depth)
             # find best split for current node
+
+            available_features = self.calculate_available_features_for_split(
+                init_features=len(X[0])
+            )
             (best_feat_idx, best_threshold, left_idxs, right_idxs) = (
-                self.get_best_split(X, y, used_features_idxs, self.criterion)
+                self.get_best_split(X, y, available_features, self.criterion)
             )
 
             node.set_split(feature_idx=best_feat_idx, threshold=best_threshold)
@@ -123,7 +128,9 @@ class DecisionTreeClassifier:
             node.split["class"] = Counter(y).most_common(1)[0][0]
             return node
 
-        self.tree = build_tree(None, X, y, 0, set())  # TODO: check depth 0 is ok?
+        self.tree = build_tree(
+            None, X, y, 0, set()
+        )  # TODO: check depth 0 is ok?
 
     def get_best_split(self, X, y, used_features, criterion_func):
         available_features = [
@@ -215,3 +222,5 @@ class DecisionTreeClassifier:
 
 
 # TODO: Add decision tree regressor
+class DecisionTreeRegressor(DecisionTreeClassifier):
+    pass

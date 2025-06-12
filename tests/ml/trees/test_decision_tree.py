@@ -10,9 +10,7 @@ def train_data():
     return X, y
 
 
-
 class TestDecisionTreeClassifier:
-
     def test_dry_run(self):
         clf = DecisionTreeClassifier()
 

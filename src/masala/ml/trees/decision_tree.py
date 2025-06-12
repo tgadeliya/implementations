@@ -1,12 +1,12 @@
-from typing import Optional, Union, List, Set
+from typing import Optional, Union, List, Tuple, Iterable, Set
+from math import log2
 from collections import Counter
 
-from ..metrics import (
+from masala.ml.trees.metrics import (
     gini_impurity,
     shannon_entropy,
     missclassification_error,
 )
-
 
 class DecisionTreeNode:
     def __init__(self, parent: "DecisionTreeNode", depth: int):
@@ -67,10 +67,7 @@ class DecisionTreeClassifier:
             if self.max_depth and depth > self.max_depth:
                 return None  # max depth reached
 
-            if (
-                self.max_features
-                and len(used_features_idxs) == self.max_features
-            ):
+            if self.max_features and len(used_features_idxs) == self.max_features:
                 return None  # max features reached
 
             if len(set(y)) == 1:  # TODO: AND?
@@ -91,9 +88,7 @@ class DecisionTreeClassifier:
             y_left = [y[idx] for idx in left_idxs]
             X_right = [X[idx] for idx in right_idxs]
             y_right = [y[idx] for idx in right_idxs]
-            node.left = build_tree(
-                node, X_left, y_left, depth + 1, used_features_idxs
-            )
+            node.left = build_tree(node, X_left, y_left, depth + 1, used_features_idxs)
             node.right = build_tree(
                 node, X_right, y_right, depth + 1, used_features_idxs
             )
@@ -103,14 +98,10 @@ class DecisionTreeClassifier:
             node.split["class"] = Counter(y).most_common(1)[0][0]
             return node
 
-        self.tree = build_tree(
-            None, X, y, 0, set()
-        )  # TODO: check depth 0 is ok?
+        self.tree = build_tree(None, X, y, 0, set())  # TODO: check depth 0 is ok?
 
     def get_best_split(self, X, y, used_features, criterion_func):
-        available_features = [
-            i for i in range(len(X[0])) if i not in used_features
-        ]
+        available_features = [i for i in range(len(X[0])) if i not in used_features]
         inf_gains = []
         for feature_idx in available_features:
             ig_best, ig_best_thr, left_idxs_best, right_idxs_best = (
@@ -119,13 +110,7 @@ class DecisionTreeClassifier:
                 )
             )
             inf_gains.append(
-                (
-                    feature_idx,
-                    ig_best,
-                    ig_best_thr,
-                    left_idxs_best,
-                    right_idxs_best,
-                )
+                (feature_idx, ig_best, ig_best_thr, left_idxs_best, right_idxs_best)
             )
 
         inf_gains.sort(key=lambda x: x[1], reverse=True)
@@ -135,6 +120,7 @@ class DecisionTreeClassifier:
         return best_feature_idx, best_thr, left_idxs_best, right_idxs_best
 
     def get_information_gain(self, x, y, criterion_func):
+
         # Top-N heuristic
         # Furthermore, when there are a lot of numeric features
         # in a dataset, each with a lot of unique values, only the
@@ -161,9 +147,7 @@ class DecisionTreeClassifier:
             ig_left = criterion_func(yl)
             ig_right = criterion_func(yr)
             ig_thr = (
-                ig
-                - (len(left) / len(x)) * ig_left
-                - (len(right) / len(x)) * ig_right
+                ig - (len(left) / len(x)) * ig_left - (len(right) / len(x)) * ig_right
             )
 
             if ig_thr > ig_best:
@@ -186,11 +170,7 @@ class DecisionTreeClassifier:
         node = self.tree
         pred = node.split["class"]
         while node and (not node.is_leaf):
-            f_idx, threshold, pred = (
-                node.split["feature_idx"],
-                node.split["threshold"],
-                node.split["class"],
-            )
+            f_idx, threshold, pred = node.split["feature_idx"], node.split["threshold"], node.split["class"]
             node = node.left if x[f_idx] <= threshold else node.right
         return pred
 

@@ -46,8 +46,8 @@ def test_logistic_regression_gd_predict():
     y = [1, 0, 1]
     model = LogisticRegressionGD(lr=0.1, n_epochs=100)
     model.train(X, y)
-    prediction = model.predict([4, 5])
-    assert isinstance(prediction, float)
+    prediction = model.predict([[4, 5]])
+    assert isinstance(prediction, list)
 
 
 def test_logistic_regression_gd_init_weights():
