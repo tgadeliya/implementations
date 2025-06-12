@@ -1,81 +1,77 @@
-from typing import Optional, Union, List, Tuple, Iterable, Set
-from math import log2
 from collections import Counter
+from collections.abc import Iterable
+from math import log2
 
 
 # Popular criterions for decision tree split
 
 
-def gini_impurity(x: Iterable[Union[str, int]]) -> float:
-    """
-    Calculate the Gini impurity of a list of classes.
-    """
-    sum_probs = 0
+def gini_impurity(x: list[str | int]) -> float:
+    """Calculate the Gini impurity of a list of classes."""
+    sum_probs: float = 0.0
     for c in set(x):
-        p = [o for o in x if o == c] / len(x)
+        p: float = len([o for o in x if o == c]) / len(x)
         sum_probs += p**2
     return 1 - sum_probs
 
 
-def shannon_entropy(x: Iterable[Union[str, int]]) -> float:
-    """
-    Calculate the Shannon entropy of a list of classes."""
+def shannon_entropy(x: list[str | int]) -> float:
+    """Calculate the Shannon entropy of a list of classes."""
     classes = set(x)
-    sum_ent = 0
+    sum_ent = 0.0
     for c in classes:
-        p = [o for o in x if o == c] / len(x)
+        p = len([o for o in x if o == c]) / len(x)
         sum_ent += -p * log2(p)
     return sum_ent
 
 
-def missclassification_error(x: Iterable[Union[str, int]]) -> float:
-    """
-    Calculate the misclassification error of a list of classes.
-    """
-    probs = []
+def missclassification_error(x: list[str | int]) -> float:
+    """Calculate the misclassification error of a list of classes."""
+    probs: list[float] = []
     for c in set(x):
-        p = [o for o in x if o == c] / len(x)
+        p: float = len([o for o in x if o == c]) / len(x)
         probs.append(p)
     return 1 - max(probs)
 
 
 class DecisionTreeNode:
     def __init__(self, parent: "DecisionTreeNode", depth: int):
-        self.parent = parent
-        self.depth = depth
-        self.left = None
-        self.right = None
-        self.is_leaf = False
-        self.split = {"feature_idx": None, "threshold": None}
+        self.parent: DecisionTreeNode | None = parent
+        self.depth: int = depth
+        self.left: DecisionTreeNode | None = None
+        self.right: DecisionTreeNode | None = None
+        self.is_leaf: bool = False
+        self.split: dict[str, float | None] = {
+            "feature_idx": None,
+            "threshold": None,
+            "class": None
+        }
 
-    def set_split(self, feature_idx, threshold):
+
+    def set_split(self, feature_idx: int, threshold: float) -> None:
         self.split["feature_idx"] = feature_idx
         self.split["threshold"] = threshold
 
 
 class DecisionTreeClassifier:
-    """
-    A Decision Tree Classifier.
-    """
+    """A Decision Tree Classifier."""
 
     def __init__(
         self,
         criterion: str = "gini",
-        max_depth: Optional[int] = None,
-        max_leaf_nodes: Optional[int] = None,
-        max_features: Optional[int] = None,
+        max_depth: int | None = None,
+        max_leaf_nodes: int | None = None,
+        max_features: int | None = None,
     ):
         self.criterion = self.get_criterion(criterion)
         self.max_depth = max_depth
         self.max_leaf_nodes = max_leaf_nodes
         self.max_features = max_features
 
-        self.tree = None
+        self.tree: DecisionTreeNode
 
     def get_criterion(self, criterion: str):
-        """
-        Get the criterion function based on the specified criterion.
-        """
+        """Get the criterion function based on the specified criterion."""
         if criterion == "gini":
             return gini_impurity
         elif criterion == "shannon_entropy":
@@ -85,16 +81,22 @@ class DecisionTreeClassifier:
         else:
             raise ValueError(f"Unknown criterion: {criterion}")
 
-    def train(self, X, y):
-        """
-        Fit the decision tree classifier to the training data.
-        """
-
-        self.classes = set(y)
+    def train(self, X: list[list[float]], y: list[float | str]) -> None:
+        """Fit the decision tree classifier to the training data."""
+        self.classes: set[float| str] = set(y)
         self.n_classes = len(self.classes)
 
-        def build_tree(self, parent_node, X, y, depth, used_features_idxs: Set[int]):
-            if depth >= self.max_depth or used_features_idxs == self.max_features:
+        def build_tree(
+            parent_node: DecisionTreeClassifier | None,
+            X: list[list[float]],
+            y: list[float | str],
+            depth: int,
+            used_features_idxs: set[int],
+        ) -> DecisionTreeNode | None:
+            if (
+                depth >= self.max_depth
+                or used_features_idxs == self.max_features
+            ):
                 return None
 
             # TODO: Add heuristic for too few samples
@@ -115,7 +117,11 @@ class DecisionTreeClassifier:
                 node, X[left_idxs], y[left_idxs], depth + 1, used_features_idxs
             )
             node.right = build_tree(
-                node, X[right_idxs], y[right_idxs], depth + 1, used_features_idxs
+                node,
+                X[right_idxs],
+                y[right_idxs],
+                depth + 1,
+                used_features_idxs,
             )
 
             if node.left is None and node.right is None:  # leaf node
@@ -126,7 +132,9 @@ class DecisionTreeClassifier:
         self.tree = build_tree(None, X, y, 0, set())
 
     def get_best_split(self, X, y, used_features, criterion_func):
-        available_features = [i for i in range(len(X[0])) if i not in used_features]
+        available_features = [
+            i for i in range(len(X[0])) if i not in used_features
+        ]
         inf_gains = []
         for feature_idx in available_features:
             ig_best, ig_best_thr, left_idxs_best, right_idxs_best = (
@@ -135,7 +143,13 @@ class DecisionTreeClassifier:
                 )
             )
             inf_gains.append(
-                (feature_idx, ig_best, ig_best_thr, left_idxs_best, right_idxs_best)
+                (
+                    feature_idx,
+                    ig_best,
+                    ig_best_thr,
+                    left_idxs_best,
+                    right_idxs_best,
+                )
             )
 
         inf_gains.sort(key=lambda x: x[1], reverse=True)
@@ -145,12 +159,13 @@ class DecisionTreeClassifier:
         return best_feature_idx, best_thr, left_idxs_best, right_idxs_best
 
     def get_information_gain(self, x, y, criterion_func):
-
         # TODO: Add support for categorical features
         xs = sorted(set(x))
         # TODO: Implement heurstic from mlcourse
         # Conclusion: the simplest heuristics for handling numeric features
-        # in a decision tree is to sort its values in ascending order and check only those thresholds where the value of the target variable changes.
+        # in a decision tree is to sort its values in ascending order and
+        # check only those thresholds where the value of the target
+        # variable changes.
         thresholds = [(p[0] + p[1]) / 2 for p in zip(xs[:-1], xs[1:])]
         ig = criterion_func(y)
         ig_best, ig_best_thr = 0, None
@@ -161,7 +176,9 @@ class DecisionTreeClassifier:
             ig_left = criterion_func(y[left])
             ig_right = criterion_func(y[right])
             ig_thr = (
-                ig - (len(left) / len(x)) * ig_left - (len(right) / len(x)) * ig_right
+                ig
+                - (len(left) / len(x)) * ig_left
+                - (len(right) / len(x)) * ig_right
             )
 
             if ig_thr > ig_best:
@@ -171,19 +188,18 @@ class DecisionTreeClassifier:
                 right_idxs_best = right
         return ig_best, ig_best_thr, left_idxs_best, right_idxs_best
 
-    def predict(self, X: List[List[Union[int, float]]]) -> List[int]:
-        """
-        Predict the class labels for the input data.
-        """
+    def predict(self, X: list[list[int | float]]) -> list[int]:
+        """Predict the class labels for the input data."""
         return [self.predict_example(x) for x in X]
 
-    def predict_example(self, x: List[Union[int, float]]) -> int:
-        """
-        Predict the class label for a single example.
-        """
-        node.self.tree
+    def predict_example(self, x: list[int | float]) -> float:
+        """Predict the class label for a single example."""
+        node = self.tree
         while not node.is_leaf:
-            f_idx, threshold = node.split["feature_idx"], node.split["threshold"]
+            f_idx, threshold = (
+                node.split["feature_idx"],
+                node.split["threshold"],
+            )
             node = node.left if x[f_idx] <= threshold else node.right
         return node.split["class"]
 

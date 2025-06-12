@@ -1,8 +1,11 @@
-import pytest
-from rooibos.ml.logistic_regression.logistic_regression_gd import LogisticRegressionGD
+from rooibos.ml.logistic_regression.logistic_regression_gd import (
+    LogisticRegressionGD,
+)
+
 
 def test_logistic_regression_gd_init():
     LogisticRegressionGD(lr=0.01, n_epochs=10)
+
 
 def test_logistic_regression_gd_train_small():
     X = [[1, 2], [2, 3], [3, 4]]
@@ -12,8 +15,10 @@ def test_logistic_regression_gd_train_small():
     # prediction = model.predict([4, 5])
     # assert isinstance(prediction, float)
 
+
 def test_logistic_regression_gd_train():
-    import numpy as np        
+    import numpy as np
+
     # Set seed for reproducibility
     np.random.seed(0)
 
@@ -35,6 +40,7 @@ def test_logistic_regression_gd_train():
     assert isinstance(result["weight"], list)
     assert isinstance(result["bias"], float)
 
+
 def test_logistic_regression_gd_predict():
     X = [[1, 2], [2, 3], [3, 4]]
     y = [1, 0, 1]
@@ -43,11 +49,13 @@ def test_logistic_regression_gd_predict():
     prediction = model.predict([4, 5])
     assert isinstance(prediction, float)
 
+
 def test_logistic_regression_gd_init_weights():
     model = LogisticRegressionGD(lr=0.01, n_epochs=10)
     model._init_weights(3)
     assert model.W == [0.0, 0.0, 0.0]
     assert model.b == 0
+
 
 def test_logistic_regression_gd_training_step():
     model = LogisticRegressionGD(lr=0.01, n_epochs=10)

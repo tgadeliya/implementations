@@ -1,4 +1,5 @@
 import pytest
+
 from rooibos.ml.nearest_neighbours import KNNClassifier, KNNRegressor
 
 
@@ -8,10 +9,13 @@ def test_model_supported_metrics(model):
     assert m.metric == "euclidean" and m.n_neighbors == 3
 
 
-@pytest.mark.parametrize("model, metric", [
-    (KNNClassifier, "invalid_metric"),
-    (KNNRegressor, "invalid_metric"),
-])
+@pytest.mark.parametrize(
+    "model, metric",
+    [
+        (KNNClassifier, "invalid_metric"),
+        (KNNRegressor, "invalid_metric"),
+    ],
+)
 def test_model_initialization_with_invalid_metrics(model, metric):
     with pytest.raises(AssertionError):
         model(n_neighbors=3, metric=metric)

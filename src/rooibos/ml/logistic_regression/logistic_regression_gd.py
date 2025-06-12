@@ -1,20 +1,20 @@
-from typing import Optional,Union
 from math import exp
+
 
 class LogisticRegressionGD:
     def __init__(self, lr, n_epochs):
         self.lr = lr
         self.n_epochs = n_epochs
 
-        self.W: Optional[list[float]] = None
-        self.b: Optional[float] = None
+        self.W: list[float]
+        self.b: float
 
-    def dot(self, x,y):
-        return sum([i*j for i,j in zip(x,y)])
+    def dot(self, x, y):
+        return sum([i * j for i, j in zip(x, y)])
 
     def sigmoid(self, x):
-        if x<0:
-            return 1 - 1/(1+exp(x))
+        if x < 0:
+            return 1 - 1 / (1 + exp(x))
         return 1 / (1 + exp(-x))
 
     def _init_weights(self, n_feat):
@@ -26,21 +26,20 @@ class LogisticRegressionGD:
             self.W[i] -= self.lr * gw[i]
         self.b -= self.lr * gb
 
-    def train(self,X, y) -> dict[str, Union[list[float], float]]:
+    def train(self, X, y) -> dict[str, list[float] | float]:
         n_feat = len(X[0])
         self._init_weights(n_feat)
 
         for i in range(self.n_epochs):
             self.train_one_epoch(X, y)
             print(f"Epoch={i},  W={self.W};   b={self.b}")
-        
-        return {"weight":self.W, "bias": self.b}
+
+        return {"weight": self.W, "bias": self.b}
 
     def train_one_epoch(self, X, y):
         for i in range(len(X)):
             grad_w, grad_b = self.training_step(X[i], y[i])
             self._update_weights(grad_w, grad_b)
-           
 
     def training_step(self, x, y):
         grad_w = []
@@ -49,8 +48,8 @@ class LogisticRegressionGD:
             res = (1 - self.sigmoid(prod)) * -y * x[i]
             grad_w.append(res)
 
-        grad_b = (1 - self.sigmoid(prod)) * -y         
-        
+        grad_b = (1 - self.sigmoid(prod)) * -y
+
         return grad_w, grad_b
 
     def predict():

@@ -1,1 +1,2 @@
-from .knn import KNNClassifier, KNNRegressor
+from .knn import KNNClassifier as KNNClassifier
+from .knn import KNNRegressor as KNNRegressor

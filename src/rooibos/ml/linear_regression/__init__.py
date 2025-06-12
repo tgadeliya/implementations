@@ -1,1 +1,1 @@
-from .linear_regression_gd import LinearRegressionSGD
+from .linear_regression_gd import LinearRegressionSGD as LinearRegressionSGD

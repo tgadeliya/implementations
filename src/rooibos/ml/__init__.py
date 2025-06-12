@@ -1,1 +1,1 @@
-from .tree.decision_tree import DecisionTreeClassifier
+from .tree.decision_tree import DecisionTreeClassifier as DecisionTreeClassifier
