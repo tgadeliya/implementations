@@ -80,3 +80,6 @@ dmypy.json
 
 
 .DS_Store
+
+# notebook for experiments
+notebooks/quick_experiment.ipynb

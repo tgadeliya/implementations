@@ -9,8 +9,35 @@ dependencies = [
     "ipykernel>=6.29.5",
     "matplotlib>=3.10.1",
     "nbformat>=5.10.4",
-    "numpy>=2.2.4",
+    "numpy<2",
     "pandas>=2.2.3",
     "plotly>=6.0.1",
+    "pyrefly>=0.19.0",
     "pytest>=8.3.5",
+    "torch==2.2.2",
+]
+
+
+[tool.ruff]
+line-length = 80
+
+[tool.ruff.lint]
+preview = true
+select = [
+    "E",
+    "F",
+    "I",
+    "UP"
+]
+extend-select = [
+    "E501",
+    "UP045"
+]
+ignore = [
+    "E702"
+]
+
+[tool.pyrefly]
+search_path = [
+    "src/rooibos/"
 ]
