@@ -8,7 +8,7 @@ def test_logistic_regression_gd_init():
 
 
 def test_logistic_regression_gd_train_small():
-    X = [[1, 2], [2, 3], [3, 4]]
+    X = [[1.0, 2.0], [2.0, 3.0], [3.0, 4.0]]
     y = [1, 1, -1]
     model = LogisticRegressionGD(lr=0.1, n_epochs=2)
     model.train(X, y)
@@ -43,25 +43,24 @@ def test_logistic_regression_gd_train():
 
 def test_logistic_regression_gd_predict():
     X = [[1, 2], [2, 3], [3, 4]]
-    y = [1, 0, 1]
+    y = [1, -1, 1]
     model = LogisticRegressionGD(lr=0.1, n_epochs=100)
     model.train(X, y)
-    prediction = model.predict([4, 5])
-    assert isinstance(prediction, float)
+    prediction = model.predict([[4, 5]])
+    assert isinstance(prediction, list)
+    assert isinstance(prediction[0], int)
 
 
 def test_logistic_regression_gd_init_weights():
     model = LogisticRegressionGD(lr=0.01, n_epochs=10)
-    model._init_weights(3)
+    model._init_weights(3)  # type: ignore
     assert model.W == [0.0, 0.0, 0.0]
     assert model.b == 0
 
 
 def test_logistic_regression_gd_training_step():
     model = LogisticRegressionGD(lr=0.01, n_epochs=10)
-    model._init_weights(2)
-    x = [1, 2]
-    y = 1
-    grad_w, grad_b = model.training_step(x, y)
+    model._init_weights(2)  # type: ignore
+    grad_w, grad_b = model.training_step([1, 2], 1)
     assert len(grad_w) == 2
     assert isinstance(grad_b, float)

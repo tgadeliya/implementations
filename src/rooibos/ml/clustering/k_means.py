@@ -9,7 +9,7 @@ class KMeans:
     def __init__(self, n_clusters: int, max_iter: int = 300) -> None:
         self.n_clusters: int = n_clusters
         self.max_iter: int = max_iter
-        self.centroids: list[list[float]]
+        self.centroids: list[list[float]] = []
 
     def _init_centroids(self, dim: int) -> list[list[float]]:
         centroids: list[list[float]] = []
@@ -25,8 +25,11 @@ class KMeans:
 
         n_iter = 0
         while n_iter < self.max_iter:
-            new_centroids = self.train_one_epoch(X, self.centroids)
-            if self.is_stable(new_centroids, self.centroids):
+            new_centroids = self.train_one_epoch(  # pyrefly: ignore
+                X,
+                self.centroids,  # pyrefly: ignore
+            )
+            if self.is_stable(new_centroids, self.centroids):  # pyrefly: ignore
                 break
             self.centroids = new_centroids
             n_iter += 1
@@ -69,22 +72,9 @@ class KMeans:
         self,
         cs1: list[list[float]],
         cs2: list[list[float]],
-        tol: float | None = 1e-5,
+        tol: float = 1e-5,
     ) -> bool:
         def is_sim_cent(c1: list[float], c2: list[float]) -> bool:
-            return all(abs(c1d - c2d) < tol for c1d, c2d in zip(c1, c2))  # type: ignore
+            return all(abs(c1d - c2d) < tol for c1d, c2d in zip(c1, c2))
 
         return all(is_sim_cent(c1, c2) for c1, c2 in zip(cs1, cs2))
-
-    # def predict(self, X):
-    #     preds = []
-    #     for x in X:
-    #         prob = self.predict_example(x)
-    #         # Manage probs -> preds
-    #         pred = prob
-    #         preds.append(pred)
-
-    #     return preds
-
-    # def predict_example(self, x):
-    #     pass

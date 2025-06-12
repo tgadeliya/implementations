@@ -15,6 +15,6 @@ test:
 
 flow:
 	make typecheck
-	make lint
 	make format
+	make lint
 	make test

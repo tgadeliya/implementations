@@ -1,3 +1,8 @@
+
+
+
+
+```python
 from math import log2
 
 MAX_DEPTH = float("inf")
@@ -133,3 +138,6 @@ if __name__ == "__main__":
     target = "PlayTennis"
 
     tree = learn_decision_tree(examples, attributes, target)
+
+
+```

@@ -5,19 +5,18 @@ def test_kmeans_initialization():
     model = KMeans(n_clusters=3, max_iter=100)
     assert model.n_clusters == 3
     assert model.max_iter == 100
-    assert model.centroids is None
 
 
 def test_kmeans_init_centroids():
     model = KMeans(n_clusters=2)
-    centroids = model._init_centroids(dim=3)
+    centroids = model.train([[1.0, 2.0, 3.0]])
     assert len(centroids) == 2
-    assert all(len(c) == 3 for c in centroids)
+    assert all([len(c) == 3 for c in centroids])
 
 
 def test_kmeans_train():
     model = KMeans(n_clusters=2, max_iter=10)
-    X = [[1, 2], [2, 3], [10, 10], [11, 11]]
+    X = [[1.0, 2.0], [2.0, 3.0], [10.0, 10.0], [11.0, 11.0]]
     centroids = model.train(X)
     assert len(centroids) == 2
     assert all(len(c) == 2 for c in centroids)

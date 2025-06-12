@@ -1,5 +1,6 @@
 from pytest import fixture
-from masala.ml import DecisionTreeClassifier
+
+from rooibos.ml.tree import DecisionTreeClassifier
 
 
 @fixture
@@ -10,11 +11,9 @@ def train_data():
     return X, y
 
 
-
 class TestDecisionTreeClassifier:
-
     def test_dry_run(self):
-        clf = DecisionTreeClassifier()
+        DecisionTreeClassifier()
 
     def test_dry_train(self, train_data):
         X, y = train_data

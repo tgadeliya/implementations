@@ -1,1 +1,3 @@
-from rooibos.ml.tree.decision_tree import DecisionTreeClassifier # type: ignore
+from rooibos.ml.tree.decision_tree import (
+    DecisionTreeClassifier as DecisionTreeClassifier,  # type: ignore
+)
