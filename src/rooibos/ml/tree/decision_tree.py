@@ -1,7 +1,5 @@
 from collections import Counter
-from collections.abc import Iterable
 from math import log2
-
 
 # Popular criterions for decision tree split
 
@@ -41,12 +39,7 @@ class DecisionTreeNode:
         self.left: DecisionTreeNode | None = None
         self.right: DecisionTreeNode | None = None
         self.is_leaf: bool = False
-        self.split: dict[str, float | None] = {
-            "feature_idx": None,
-            "threshold": None,
-            "class": None
-        }
-
+        self.split: dict[str, float]
 
     def set_split(self, feature_idx: int, threshold: float) -> None:
         self.split["feature_idx"] = feature_idx
@@ -69,6 +62,7 @@ class DecisionTreeClassifier:
         self.max_features = max_features
 
         self.tree: DecisionTreeNode
+        self.labels: set[float | str]
 
     def get_criterion(self, criterion: str):
         """Get the criterion function based on the specified criterion."""
@@ -83,9 +77,8 @@ class DecisionTreeClassifier:
 
     def train(self, X: list[list[float]], y: list[float | str]) -> None:
         """Fit the decision tree classifier to the training data."""
-        self.classes: set[float| str] = set(y)
-        self.n_classes = len(self.classes)
-
+        self.labels = set(y)
+        
         def build_tree(
             parent_node: DecisionTreeClassifier | None,
             X: list[list[float]],
