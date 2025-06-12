@@ -31,20 +31,10 @@ MANIFEST
 
 
 # Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
 .cache
 nosetests.xml
-coverage.xml
-*.cover
 *.py,cover
-.hypothesis/
 .pytest_cache/
-cover/
-
 
 
 # Jupyter Notebook
@@ -61,16 +51,8 @@ __pypackages__/
 # Environments
 .venv
 
-
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
+# ruff
+.ruff_cache
 
 # PyPI configuration file
 .pypirc
@@ -83,5 +65,3 @@ dmypy.json
 
 # notebook for experiments
 notebooks/quick_experiment.ipynb
-
-# other implementation ju
