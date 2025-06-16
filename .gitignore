@@ -36,7 +36,6 @@ nosetests.xml
 *.py,cover
 .pytest_cache/
 
-
 # Jupyter Notebook
 .ipynb_checkpoints
 
@@ -60,7 +59,10 @@ __pypackages__/
 # VS Code settings
 .vscode
 
+# Ruff
+.ruff_cache
 
+# Mac OS 
 .DS_Store
 
 # notebook for experiments

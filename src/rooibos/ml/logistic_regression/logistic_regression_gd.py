@@ -53,7 +53,6 @@ class LogisticRegressionGD:
             grad_w.append(res)
 
         grad_b = (1 - self.sigmoid(prod)) * -y
-
         return grad_w, grad_b
 
     def predict(self, xs: list[list[float]]) -> list[int]:
