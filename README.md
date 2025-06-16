@@ -1,14 +1,17 @@
 # 🫖 rooibos
-Implementation of ML and DL algorithms with tests. Most of implementations aimed to be simple to be able to reimplement in reasonably short timr
-Idea of creating this repo comes after coding assignment on codesignal when I was shocked that someone can ask about implementation of ML algo in plain python 
 
-### Features
+>  /ˈrɔɪbɒs/ ROY-boss; Afrikaans: [ˈroːibɔs], lit. 'red bush'
+
+A bunch of ML and DL algorithm implementations with tests. I kept most of them simple so they can be quickly reimplemented from scratch.
+I started this repo after failing a CodeSignal assignment — I was so shocked they asked me to implement things like dot product in plain Python that I totally froze
+
+#### Features
 - ml algorithms implemented in python and numpy
-- dl algorithms implementation in numpy,torch,jax(maybe)
+- dl algorithms implementation in numpy, torch, jax(maybe)
 - test suits for every algorithm
-- notebooks with to train implementation and additional tests to better understanding algorithms
+- notebooks to train implementations and additional tests to better understand algorithms
 
-#
+## Algorithms
 | ML |
 | --- |
 | [`Linear Regression`](https://github.com/tgadeliya/implementations/tree/main/src/rooibos/ml/linear_regression) |
@@ -18,7 +21,7 @@ Idea of creating this repo comes after coding assignment on codesignal when I wa
 | [`Decision Tree`](https://github.com/tgadeliya/implementations/tree/main/src/rooibos/ml/tree) |
 
 
-# References
+## References
 
 - [`mlcourse.ai`](https://mlcourse.ai/book/index.html)
 - Kevin P. Murphy [`"Probabilistic Machine Learning: An Introduction"`](https://probml.github.io/pml-book/book1.html)
