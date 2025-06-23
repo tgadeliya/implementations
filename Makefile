@@ -12,7 +12,6 @@ typecheck:
 test:
 	uv run pytest tests
 
-
 flow:
 	make typecheck
 	make format

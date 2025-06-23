@@ -22,9 +22,9 @@ class TransformerLM(nn.Module):
         d_ff: int,
         theta: float,
     ) -> None:
-        super().__init__()
+        super().__init__()  # type: ignore
         self.emb = Embedding(num_embeddings=vocab_size, embedding_dim=d_model)
-        layers = OrderedDict()
+        layers: OrderedDict[str, nn.Module] = OrderedDict()
         for i in range(num_layers):
             layers[str(i)] = TransformerBlock(
                 d_model=d_model,
