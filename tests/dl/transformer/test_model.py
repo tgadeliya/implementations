@@ -1,0 +1,40 @@
+from dataclasses import dataclass, asdict
+
+import pytest
+import torch
+
+from rooibos.dl.transformer.models import TransformerLM
+
+
+@dataclass
+class TransformerArgs:
+    vocab_size: int = 1024
+    context_length: int = 512
+    num_layers: int = 8
+    d_model: int = 124
+    num_heads: int = 12
+    d_ff: int = 1024
+    theta: float = 1000
+
+
+@pytest.fixture(scope="module")
+def transformer_args() -> dict[str, float]:
+    return asdict(TransformerArgs())
+
+
+class TestTransformerModel:
+    def test_init(self, transformer_args: dict[str, float]) -> None:
+        TransformerLM(**transformer_args)
+
+    def test_dry_run(self, transformer_args: TransformerArgs) -> None:
+        bs = 1
+        seq_len = transformer_args["context_length"]
+        vocab_size = transformer_args["vocab_size"]
+
+        x = torch.arange(bs * seq_len).reshape(bs, seq_len)
+        model = TransformerLM(**transformer_args)
+        out = model(x)
+        out_bs, out_seq_len, out_vocab_size = out.size()
+        assert out_bs == bs
+        assert out_seq_len == seq_len
+        assert out_vocab_size == vocab_size
