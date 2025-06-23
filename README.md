@@ -8,8 +8,8 @@ I started this repo after failing a CodeSignal assignment — I was so shocked t
 #### Features
 - ml algorithms implemented in python and numpy
 - dl algorithms implementation in numpy, torch, jax(maybe)
-- test suits for every algorithm
-- notebooks to train implementations and additional tests to better understand algorithms
+- test suits for every algorithm (WIP)
+- notebooks to train implementations and additional tests to better understand algorithms (coming soon)
 
 ## Algorithms
 | ML |
