@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "black>=25.1.0",
+    "einops>=0.8.1",
     "ipykernel>=6.29.5",
     "matplotlib>=3.10.1",
     "nbformat>=5.10.4",
@@ -14,7 +15,9 @@ dependencies = [
     "plotly>=6.0.1",
     "pyrefly>=0.19.0",
     "pytest>=8.3.5",
+    "regex>=2024.11.6",
     "torch==2.2.2",
+    "tqdm>=4.67.1",
 ]
 
 [build-system]
