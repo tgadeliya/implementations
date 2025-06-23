@@ -254,7 +254,8 @@ def train_bpe_from_pretokenized_corpus(
         if max_merge is None:
             print("Every token is merged into one word!")
             break
-        vocab[len(vocab)] = b"".join(max_merge)
+        vl = len(vocab)
+        vocab[vl] = b"".join(max_merge)
         merges.append(max_merge)
         pre_tokenized_corpus = _recalc(pre_tokenized_corpus, max_merge)
 
