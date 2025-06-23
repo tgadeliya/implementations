@@ -23,18 +23,18 @@ def transformer_args() -> dict[str, float]:
 
 
 class TestTransformerModel:
-    def test_init(self, transformer_args: dict[str, float]) -> None:
+    def test_init(self, transformer_args):
         TransformerLM(**transformer_args)
 
-    def test_dry_run(self, transformer_args: TransformerArgs) -> None:
-        bs = 1
-        seq_len = transformer_args["context_length"]
+    @pytest.mark.parametrize("bs,seq_len", [(1, 256), (2, 17), (4, 1)])
+    def test_dry_run(self, bs, seq_len, transformer_args):
         vocab_size = transformer_args["vocab_size"]
-
-        x = torch.arange(bs * seq_len).reshape(bs, seq_len)
+        x = torch.randint(0, vocab_size, (bs, seq_len))
         model = TransformerLM(**transformer_args)
         out = model(x)
+        
         out_bs, out_seq_len, out_vocab_size = out.size()
+        
         assert out_bs == bs
         assert out_seq_len == seq_len
         assert out_vocab_size == vocab_size
