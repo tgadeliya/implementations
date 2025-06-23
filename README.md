@@ -22,8 +22,9 @@ I started this repo after failing a CodeSignal assignment — I was so shocked t
 
 | DL |
 | --- |
+| [`BPE tokenizer and trainer`](https://github.com/tgadeliya/implementations/blob/main/src/rooibos/dl/transformer/bpe_tokenizer.py) |
 | [`Transformer for Language Modeling`](https://github.com/tgadeliya/implementations/blob/main/src/rooibos/dl/transformer/models.py) |
-| [`Multi-head Attention`](https://github.com/tgadeliya/implementations/blob/main/src/rooibos/dl/transformer/models.py) |
+| [`Multi-head Attention`](https://github.com/tgadeliya/implementations/blob/main/src/rooibos/dl/transformer/components.py) |
 | [`Rotary Position Embeddings (RoPE)`](https://github.com/tgadeliya/implementations/blob/main/src/rooibos/dl/transformer/components.py) |
 | Other transformer components: [`RMSNorm`](https://github.com/tgadeliya/implementations/blob/main/src/rooibos/dl/transformer/components.py),[`Embedding`](https://github.com/tgadeliya/implementations/blob/main/src/rooibos/dl/transformer/components.py), [`Linear`](https://github.com/tgadeliya/implementations/blob/main/src/rooibos/dl/transformer/components.py), [`SiLU`](https://github.com/tgadeliya/implementations/blob/main/src/rooibos/dl/transformer/components.py), [`SwiGLU`](https://github.com/tgadeliya/implementations/blob/main/src/rooibos/dl/transformer/components.py) |
 
